@@ -1,0 +1,83 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+
+	<ItemGroup>
+		<None Include="wwwroot\fonts\boolean-dark.svg" />
+		<None Include="wwwroot\fonts\boolean-light.svg" />
+		<None Include="wwwroot\fonts\breakpoint-conditional-disabled.svg" />
+		<None Include="wwwroot\fonts\breakpoint-conditional-unverified.svg" />
+		<None Include="wwwroot\fonts\breakpoint-conditional.svg" />
+		<None Include="wwwroot\fonts\breakpoint-disabled.svg" />
+		<None Include="wwwroot\fonts\breakpoint-hint.svg" />
+		<None Include="wwwroot\fonts\breakpoint-log-disabled.svg" />
+		<None Include="wwwroot\fonts\breakpoint-log-unverified.svg" />
+		<None Include="wwwroot\fonts\breakpoint-log.svg" />
+		<None Include="wwwroot\fonts\breakpoint-unsupported.svg" />
+		<None Include="wwwroot\fonts\breakpoint-unverified.svg" />
+		<None Include="wwwroot\fonts\breakpoint.svg" />
+		<None Include="wwwroot\fonts\class-dark.svg" />
+		<None Include="wwwroot\fonts\class-light.svg" />
+		<None Include="wwwroot\fonts\constant-dark.svg" />
+		<None Include="wwwroot\fonts\constant-light.svg" />
+		<None Include="wwwroot\fonts\current-and-breakpoint.svg" />
+		<None Include="wwwroot\fonts\current-arrow.svg" />
+		<None Include="wwwroot\fonts\enumerator-dark.svg" />
+		<None Include="wwwroot\fonts\enumerator-item-dark.svg" />
+		<None Include="wwwroot\fonts\enumerator-item-light.svg" />
+		<None Include="wwwroot\fonts\enumerator-light.svg" />
+		<None Include="wwwroot\fonts\event-dark.svg" />
+		<None Include="wwwroot\fonts\event-light.svg" />
+		<None Include="wwwroot\fonts\field-dark.svg" />
+		<None Include="wwwroot\fonts\field-light.svg" />
+		<None Include="wwwroot\fonts\file-dark.svg" />
+		<None Include="wwwroot\fonts\file-light.svg" />
+		<None Include="wwwroot\fonts\indexer-dark.svg" />
+		<None Include="wwwroot\fonts\indexer-light.svg" />
+		<None Include="wwwroot\fonts\interface-dark.svg" />
+		<None Include="wwwroot\fonts\interface-light.svg" />
+		<None Include="wwwroot\fonts\keyword-dark.svg" />
+		<None Include="wwwroot\fonts\keyword-light.svg" />
+		<None Include="wwwroot\fonts\loading-dark.svg" />
+		<None Include="wwwroot\fonts\loading-hc.svg" />
+		<None Include="wwwroot\fonts\loading.svg" />
+		<None Include="wwwroot\fonts\method-dark.svg" />
+		<None Include="wwwroot\fonts\method-light.svg" />
+		<None Include="wwwroot\fonts\namespace-dark.svg" />
+		<None Include="wwwroot\fonts\namespace-light.svg" />
+		<None Include="wwwroot\fonts\numeric-dark.svg" />
+		<None Include="wwwroot\fonts\numeric-light.svg" />
+		<None Include="wwwroot\fonts\operator-dark.svg" />
+		<None Include="wwwroot\fonts\operator-light.svg" />
+		<None Include="wwwroot\fonts\property-dark.svg" />
+		<None Include="wwwroot\fonts\property-light.svg" />
+		<None Include="wwwroot\fonts\snippet-dark.svg" />
+		<None Include="wwwroot\fonts\snippet-light.svg" />
+		<None Include="wwwroot\fonts\stackframe-and-breakpoint.svg" />
+		<None Include="wwwroot\fonts\stackframe-arrow.svg" />
+		<None Include="wwwroot\fonts\string-dark.svg" />
+		<None Include="wwwroot\fonts\string-light.svg" />
+		<None Include="wwwroot\fonts\structure-dark.svg" />
+		<None Include="wwwroot\fonts\structure-light.svg" />
+		<None Include="wwwroot\fonts\template-dark.svg" />
+		<None Include="wwwroot\fonts\template-light.svg" />
+		<None Include="wwwroot\fonts\variable-dark.svg" />
+		<None Include="wwwroot\fonts\variable-light.svg" />
+		<None Include="wwwroot\webview\webview.js" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.13" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.13" PrivateAssets="all" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Blazor.Code.Shared\Blazor.Code.Shared.csproj" />
+	</ItemGroup>
+
+</Project>

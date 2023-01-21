@@ -1,0 +1,115 @@
+﻿@inject KeyEventBus<string> KeyEventBus
+
+<MExpansionPanels>
+    @foreach (var masa in components)
+    {
+        <MExpansionPanel>
+            <MExpansionPanelHeader>
+                @masa.Title
+            </MExpansionPanelHeader>
+            <MExpansionPanelContent>
+                @if (masa.Childrens.Count > 0)
+                {
+                    <MExpansionPanels>
+                        @foreach (var a in masa.Childrens)
+                        {
+                            <MExpansionPanel>
+                                <MExpansionPanelHeader>
+                                    @a.Title
+                                </MExpansionPanelHeader>
+                                <MExpansionPanelContent>
+                                    <MButton OnClick="()=>GoPreview(a.Data)">预览</MButton>
+                                </MExpansionPanelContent>
+                            </MExpansionPanel>
+                        }
+                    </MExpansionPanels>
+                }
+                else
+                {
+                    <MButton OnClick="()=>GoPreview(masa.Data)">预览</MButton>
+                }
+            </MExpansionPanelContent>
+        </MExpansionPanel>
+    }
+</MExpansionPanels>
+
+@code {
+    private static List<ComponentList> components = new List<ComponentList>();
+
+    protected override void OnInitialized()
+    {
+        components.Add(new ComponentList()
+            {
+                Title = "Alerts（提示框）",
+                Childrens = new List<ComponentList>()
+                {
+                    new ComponentList("Type", "Blazor/Code/Shared/Examples/masa/alerts/Type"),
+                    new ComponentList("Twitter","Blazor/Code/Shared/Examples/masa/alerts/Twitter"),
+                    new ComponentList("Transition", "Blazor/Code/Shared/Examples/masa/alerts/Transition"),
+                    new ComponentList("Text","Blazor/Code/Shared/Examples/masa/alerts/Text"),
+                    new ComponentList("Shaped", "Blazor/Code/Shared/Examples/masa/alerts/Shaped")
+                }
+            });
+
+        components.Add(new ComponentList()
+            {
+                Title = "Toolbars（工具栏）",
+                Childrens = new List<ComponentList>()
+                {
+                    new ComponentList("Background","Blazor/Code/Shared/Examples/masa/toolbars/Background"),
+                    new ComponentList("Collapse","Blazor/Code/Shared/Examples/masa/toolbars/Collapse"),
+                    new ComponentList("ContextualActionBar","Blazor/Code/Shared/Examples/masa/toolbars/ContextualActionBar"),
+                    new ComponentList("DenseToolbars","Blazor/Code/Shared/Examples/masa/toolbars/DenseToolbars"),
+                    new ComponentList("Extended","Blazor/Code/Shared/Examples/masa/toolbars/Extended"),
+                    new ComponentList("ExtensitionHeight","Blazor/Code/Shared/Examples/masa/toolbars/ExtensitionHeight"),
+                    new ComponentList("FlexibleAndCardToolbar","Blazor/Code/Shared/Examples/masa/toolbars/FlexibleAndCardToolbar"),
+                    new ComponentList("FloatingWithSearch","Blazor/Code/Shared/Examples/masa/toolbars/FloatingWithSearch"),
+                    new ComponentList("LightAndDark","Blazor/Code/Shared/Examples/masa/toolbars/LightAndDark"),
+                    new ComponentList("ProminentToolbars","Blazor/Code/Shared/Examples/masa/toolbars/ProminentToolbars"),
+                    new ComponentList("Variations", "Blazor/Code/Shared/Examples/masa/toolbars/Variations")
+                }
+            });
+
+        components.Add(new ComponentList()
+            {
+                Title = "Tooltips（工具提示）",
+                Childrens = new List<ComponentList>()
+                {
+                    new ComponentList("Alignment","Blazor/Code/Shared/Examples/masa/tooltips/Alignment"),
+                    new ComponentList("Usage","Blazor/Code/Shared/Examples/masa/tooltips/Usage"),
+                    new ComponentList("Visibility","Blazor/Code/Shared/Examples/masa/tooltips/Visibility")
+                }
+            });
+        components.Add(new ComponentList()
+            {
+                Title = "Treeview（树形视图）",
+                Childrens = new List<ComponentList>()
+                {
+                    new ComponentList("Activatable","Blazor/Code/Shared/Examples/masa/treeview/Activatable"),
+                    new ComponentList("AppendAndLabel","Blazor/Code/Shared/Examples/masa/treeview/AppendAndLabel"),
+                    new ComponentList("Color","Blazor/Code/Shared/Examples/masa/treeview/Color"),
+                    new ComponentList("Dense","Blazor/Code/Shared/Examples/masa/treeview/Dense"),
+                    new ComponentList("Hoverable","Blazor/Code/Shared/Examples/masa/treeview/Hoverable"),
+                    new ComponentList("ItemDisabled","Blazor/Code/Shared/Examples/masa/treeview/ItemDisabled"),
+                    new ComponentList("LoadChildren","Blazor/Code/Shared/Examples/masa/treeview/LoadChildren"),
+                    new ComponentList("OpenAll","Blazor/Code/Shared/Examples/masa/treeview/OpenAll"),
+                    new ComponentList("Rounded","Blazor/Code/Shared/Examples/masa/treeview/Rounded"),
+                    new ComponentList("SearchAndFilter", "Blazor/Code/Shared/Examples/masa/treeview/SearchAndFilter"),
+                    new ComponentList("SelectableIcons","Blazor/Code/Shared/Examples/masa/treeview/SelectableIcons"),
+                    new ComponentList("SelectColor","Blazor/Code/Shared/Examples/masa/treeview/SelectColor"),
+                    new ComponentList("SelectType","Blazor/Code/Shared/Examples/masa/treeview/SelectType"),
+                    new ComponentList("Shaped","Blazor/Code/Shared/Examples/masa/treeview/Shaped"),
+                    new ComponentList("Usage","Blazor/Code/Shared/Examples/masa/treeview/Usage")
+                }
+            });
+
+
+        base.OnInitialized();
+    }
+
+    private async Task GoPreview(string type)
+    {
+        await KeyEventBus.PushAsync("preview-masa", type);
+    }
+
+}

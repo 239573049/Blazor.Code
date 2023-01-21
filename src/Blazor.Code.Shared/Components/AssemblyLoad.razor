@@ -1,0 +1,24 @@
+﻿
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>添加引用程序集</h2>
+                <InputFile OnChange="@OnFileSelected" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private async Task OnFileSelected(InputFileChangeEventArgs e)
+    {
+        var stream = new MemoryStream();
+        await e.File.OpenReadStream(e.File.Size).CopyToAsync(stream);
+
+        // TODO: Copy以后的Stream在使用中会报错 无法打开元数据文件“<内存中的程序集>”-- PE 映像不包含任何托管元数据。
+        BlazorCodeSharedExtension
+                .PortableExecutableReferences
+                .Add(MetadataReference.CreateFromStream(stream));
+    }
+}

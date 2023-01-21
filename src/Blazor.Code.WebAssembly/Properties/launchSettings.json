@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "MASA.Code.WebAssembly": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://*:62944"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+﻿@using Masa.Blazor.Extensions.Languages.Razor
+<div style="margin: 5px;">
+    @foreach (var value in CompileRazorProjectFileSystem.GlobalUsing.Split(Environment.NewLine))
+    {
+        <div style="margin-top: 5px;height: 20px;">@value  <MButton XSmall Style="float: right;color: black" Color="secondary" OnClick="() => OnDelete(value)">删除</MButton></div>
+    }
+</div>
+
+<MTextField @bind-Value="globalUsing"></MTextField>
+<MButton Block OnClick="OnText">加入引用</MButton>
+@code
+{
+    private string? globalUsing;
+
+
+    private void OnDelete(string value)
+    {
+        CompileRazorProjectFileSystem.RemoveGlobalUsing(value);
+        StateHasChanged();
+    }
+
+    private void OnText()
+    {
+        CompileRazorProjectFileSystem.AddGlobalUsing(globalUsing);
+        globalUsing = null;
+    }
+}

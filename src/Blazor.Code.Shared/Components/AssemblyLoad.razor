@@ -1,24 +1,85 @@
-﻿
+﻿@using Blazor.Code.Shared.Nuget
 <div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>添加引用程序集</h2>
-                <InputFile OnChange="@OnFileSelected" />
-            </div>
-        </div>
+
+    <MTextField @bind-Value="Value"
+                Solo
+                OnAppendOuterClick="Search"
+                AppendOuterIcon=" mdi-arrow-left">
+    </MTextField>
+
+    <MList Subheader>
+        @if (NugetListDto.data != null)
+        {
+            @foreach (var chat in NugetListDto.data)
+            {
+                <MListItem>
+                    <MListItemAvatar>
+                        <MImage
+                            alt="@($"{chat.title}")"
+                            Src="@chat.iconUrl">
+                        </MImage>
+                    </MListItemAvatar>
+
+                    <MListItemContent>
+                        <MListItemTitle>@chat.title</MListItemTitle>
+                    </MListItemContent>
+                    @* *@
+                    @* <MListItemIcon> *@
+                    @*      *@
+                    @* </MListItemIcon> *@
+                </MListItem>
+            }
+        }
+    </MList>
+    <div class="text-center">
+        <MPagination Value="skip" Length="page" ValueChanged="PageChanged"></MPagination>
     </div>
 </div>
 
 @code {
-    private async Task OnFileSelected(InputFileChangeEventArgs e)
-    {
-        var stream = new MemoryStream();
-        await e.File.OpenReadStream(e.File.Size).CopyToAsync(stream);
 
-        // TODO: Copy以后的Stream在使用中会报错 无法打开元数据文件“<内存中的程序集>”-- PE 映像不包含任何托管元数据。
-        BlazorCodeSharedExtension
-                .PortableExecutableReferences
-                .Add(MetadataReference.CreateFromStream(stream));
+    #region Inject
+
+    [Inject]
+    public NugetService NugetService { get; set; }
+
+    #endregion
+
+    ///<remarks>
+    /// 搜索内容
+    /// </remarks>
+    private string? Value { get; set; }
+
+    ///<remarks>
+    /// 是否预览
+    /// </remarks>
+    public bool Prerelease { get; set; }
+
+    private int skip { get; set; } = 1;
+
+    private int take { get; set; } = 20;
+
+    public int page => NugetListDto?.totalHits ?? 1 / 20;
+
+    private NugetListDto NugetListDto = new();
+
+    private async Task Search()
+    {
+        NugetListDto = await NugetService.SearchAsync(Value, skip - 1, take);
+        StateHasChanged();
     }
+
+    private async Task PageChanged(int i)
+    {
+        skip = i;
+        await Search();
+    }
+
 }
+
+<style>
+.left{
+    float: left;
+}
+    
+</style>

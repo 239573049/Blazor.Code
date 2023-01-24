@@ -50,6 +50,8 @@ const REFRESH: Command = {
 const COMPONENTS_ID = 'opensumi-samples:antd-theme';
 const COMPONENTS_SCHEME_ID = 'antd-theme';
 const OUTPUT_CHANNEL_ID = 'razor denbug';
+const NUGET_ID = 'nuget'
+
 export namespace EDITOR_TITLE_SAMPLE_COMMANDS {
   export const DEBUG = {
     id: 'editor-title.debug',
@@ -158,21 +160,6 @@ export class SampleContribution
 
     this.layoutService.collectViewComponent(
       {
-        id: 'nuget-view',
-        name: '添加Nuget',
-        component: () => {
-          return <AssemblyLoad />;
-        },
-        hidden: false,
-        priority: 1,
-        weight: 1,
-      },
-      'explorer',
-      { name: 'OpenSumi' },
-    );
-
-    this.layoutService.collectViewComponent(
-      {
         id: 'global-using-view',
         name: '设置全局引用',
         component: () => {
@@ -256,11 +243,52 @@ export class SampleContribution
         });
       }
     });
+
+    
+    registry.registerEditorComponent({
+      uid: `${NUGET_ID}1`,
+      scheme: NUGET_ID,
+      component: AssemblyLoad as any,
+      renderMode: EditorComponentRenderMode.ONE_PER_WORKBENCH,
+    });
+
+    registry.registerEditorComponentResolver(NUGET_ID, (resource, results) => {
+      results.push({
+        type: 'component',
+        componentId: `${NUGET_ID}1`,
+      });
+    });
+
+    registry.registerEditorComponentResolver(Schemes.file, (resource, results) => {
+      if (resource.uri.path.ext === `.${NUGET_ID}`) {
+        results.push({
+          type: 'component',
+          componentId: `${NUGET_ID}1`,
+        });
+      }
+    });
   }
 
   registerResource(service: ResourceService) {
     service.registerResourceProvider({
       scheme: COMPONENTS_SCHEME_ID,
+      provideResource: async (uri: URI): Promise<IResource<any>> => {
+        const iconClass = this.iconService.fromIcon(
+          '',
+          'https://cdn.masastack.com/images/icon9.svg',
+          IconType.Background,
+        );
+        return {
+          uri,
+          name: localize('sample.antd-components'),
+          icon: iconClass!,
+        };
+      },
+    });
+
+    
+    service.registerResourceProvider({
+      scheme: NUGET_ID,
       provideResource: async (uri: URI): Promise<IResource<any>> => {
         const iconClass = this.iconService.fromIcon(
           '',

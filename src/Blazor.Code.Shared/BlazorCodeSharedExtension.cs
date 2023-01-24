@@ -1,4 +1,5 @@
 ﻿using Blazor.Code.Shared;
+using Blazor.Code.Shared.Nuget;
 using Masa.Blazor.Extensions.Languages.Razor;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.CodeAnalysis;
@@ -28,7 +29,8 @@ public static class BlazorCodeSharedExtension
         services.AddMasaBlazor();
 
         services.AddSingleton(typeof(KeyEventBus<>));
-
+        services.AddScoped<NugetService>();
+        
         await Task.Run(async () =>
         {
             await GetReferenceAsync(services);

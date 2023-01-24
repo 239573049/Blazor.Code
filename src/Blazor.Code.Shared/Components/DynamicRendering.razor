@@ -21,16 +21,16 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        // 订阅编译事件
+    // 订阅编译事件
         _KeyEventBus.Subscription(BlazorCodeConstant.RenderComponent, async (value) =>
         {
             try
             {
                 componenType = RazorCompile.CompileToType(new CompileRazorOptions
-                    {
-                        Code = value,
-                        ConcurrentBuild = false
-                    });
+                {
+                    Code = value,
+                    ConcurrentBuild = false
+                });
 
                 _ = InvokeAsync(StateHasChanged);
             }
@@ -41,12 +41,13 @@ else
             }
         });
 
-        // bootstrap 和 masa的组件需要单独处理
+    // bootstrap 和 masa的组件需要单独处理
 
         _KeyEventBus.Subscription("preview-masa", async (value) =>
         {
             try
             {
+                value = value.StartsWith("Blazor/Code/Shared/Examples") ? value : "Blazor/Code/Shared/Examples" + value;
                 componenType = typeof(BlazorCodeConstant).Assembly.GetType(value.Replace("/", "."));
                 if (BlazorCodeSharedExtension.CodeEnvironment == CodeEnvironment.WebAssembly)
                 {
@@ -66,7 +67,6 @@ else
                     {
                         await JsRuntime.InvokeVoidAsync("window.postMessage", new { type = "set-current-value", value = file });
                     }
-
                 }
                 _ = InvokeAsync(StateHasChanged);
             }

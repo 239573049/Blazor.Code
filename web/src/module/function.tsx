@@ -9,6 +9,7 @@ import CompileInteraction from './interaction/compile.interaction'
 import { Button } from '@opensumi/ide-components';
 
 const COMPONENTS_SCHEME_ID = 'antd-theme';
+const NUGET_ID = 'nuget'
 
 interface IProps {
   work: WorkbenchEditorService;
@@ -32,9 +33,19 @@ export default class FunctionView extends React.Component<IProps, IState> {
     CompileInteraction.CompileRazor(content)
   }
 
+  OpenNuget(){
+    this.props.editorService.open(new URI(`${NUGET_ID}://`), {
+      preview: false,
+      focus: false,
+      label: 'Nuget管理',
+      split: 4,
+    });
+  }
+
   render(): React.ReactNode {
     return (<>
       <div style={{ margin: '5px' }}><Button block={true} onClick={() => this.RazorRender()} >渲染</Button></div>
+      <div style={{ margin: '5px' }}><Button block={true} onClick={() => this.OpenNuget()} >打开NUGET管理</Button></div>
       </>)
   }
 }

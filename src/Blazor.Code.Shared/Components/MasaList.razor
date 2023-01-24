@@ -18,7 +18,7 @@
                                     @a.Title
                                 </MExpansionPanelHeader>
                                 <MExpansionPanelContent>
-                                    <MButton OnClick="()=>GoPreview(a.Data)">预览</MButton>
+                                    <MButton OnClick="() => GoPreview(a.Data)">预览</MButton>
                                 </MExpansionPanelContent>
                             </MExpansionPanel>
                         }
@@ -26,7 +26,7 @@
                 }
                 else
                 {
-                    <MButton OnClick="()=>GoPreview(masa.Data)">预览</MButton>
+                    <MButton OnClick="() => GoPreview(masa.Data)">预览</MButton>
                 }
             </MExpansionPanelContent>
         </MExpansionPanel>
@@ -39,109 +39,162 @@
     protected override void OnInitialized()
     {
         components.Add(new ComponentList()
+        {
+            Title = "Alerts（提示框）",
+            Childrens = new List<ComponentList>()
             {
-                Title = "Alerts（提示框）",
-                Childrens = new List<ComponentList>()
-                {
-                    new ComponentList("Type", "Blazor/Code/Shared/Examples/masa/alerts/Type"),
-                    new ComponentList("Twitter","Blazor/Code/Shared/Examples/masa/alerts/Twitter"),
-                    new ComponentList("Transition", "Blazor/Code/Shared/Examples/masa/alerts/Transition"),
-                    new ComponentList("Text","Blazor/Code/Shared/Examples/masa/alerts/Text"),
-                    new ComponentList("Shaped", "Blazor/Code/Shared/Examples/masa/alerts/Shaped")
-                }
-            });
+                new("Type", "/masa/alerts/Type"),
+                new("Twitter", "/masa/alerts/Twitter"),
+                new("Transition", "/masa/alerts/Transition"),
+                new("Text", "/masa/alerts/Text"),
+                new("Shaped", "/masa/alerts/Shaped")
+            }
+        });
+        
+        components.Add(new ComponentList()
+        {
+            Title = "Buttons（按钮）",
+            Childrens = new List<ComponentList>()
+            {
+                new("Block", "/masa/buttons/Block"),
+                new("Depressed", "/masa/buttons/Depressed"),
+                new("Floating", "/masa/buttons/Floating"),
+                new("Icon", "/masa/buttons/Icon"),
+                new("Index", "/masa/buttons/Index"),
+                new("Loaders", "/masa/buttons/Loaders"),
+                new("Outlined", "/masa/buttons/Outlined"),
+                new("Plain", "/masa/buttons/Plain"),
+                new("Raised", "/masa/buttons/Raised"),
+                new("Rounded", "/masa/buttons/Rounded"),
+                new("Size", "/masa/buttons/Size"),
+                new("Text", "/masa/buttons/Text"),
+                new("Tile", "/masa/buttons/Tile"),
+            }
+        });
 
         components.Add(new ComponentList()
+        {
+            Title = "Drawers（抽屉）",
+            Childrens = new List<ComponentList>()
             {
-                Title = "DragZone（拖放）",
-                Childrens = new List<ComponentList>()
-                {
-                    new ComponentList("Clone", "Blazor/Code/Shared/Examples/masa/dragZone/Clone"),
-                    new ComponentList("Filter","Blazor/Code/Shared/Examples/masa/dragZone/Filter"),
-                    new ComponentList("Group", "Blazor/Code/Shared/Examples/masa/dragZone/Group"),
-                    new ComponentList("MultiyZone","Blazor/Code/Shared/Examples/masa/dragZone/MultiyZone"),
-                    new ComponentList("Pull","Blazor/Code/Shared/Examples/masa/dragZone/Pull"),
-                    new ComponentList("Put","Blazor/Code/Shared/Examples/masa/dragZone/Put"),
-                    new ComponentList("Sort","Blazor/Code/Shared/Examples/masa/dragZone/Sort"),
-                    new ComponentList("Usage","Blazor/Code/Shared/Examples/masa/dragZone/Usage"),
-                    new ComponentList("Options", "Blazor/Code/Shared/Examples/masa/dragZone/Options")
-                }
-            });
+                new("ChildContent", "/masa/dividers/ChildContent"),
+                new("Index", "/masa/dividers/Index"),
+                new("Inset", "/masa/dividers/Inset"),
+                new("SubHeaders", "/masa/buttons/SubHeaders"),
+                new("Vertical", "/masa/buttons/Vertical"),
+                new("View", "/masa/buttons/View")
+            }
+        });
+        
+        components.Add(new ComponentList()
+        {
+            Title = "DragZone（拖放）",
+            Childrens = new List<ComponentList>()
+            {
+                new("Clone", "/masa/dragZone/Clone"),
+                new("Filter", "/masa/dragZone/Filter"),
+                new("Group", "/masa/dragZone/Group"),
+                new("MultiyZone", "/masa/dragZone/MultiyZone"),
+                new("Pull", "/masa/dragZone/Pull"),
+                new("Put", "/masa/dragZone/Put"),
+                new("Sort", "/masa/dragZone/Sort"),
+                new("Usage", "/masa/dragZone/Usage"),
+                new("Options", "/masa/dragZone/Options")
+            }
+        });
 
         components.Add(new ComponentList()
+        {
+            Title = "Tabs（选项卡）",
+            Childrens = new List<ComponentList>()
             {
-                Title = "Tabs（选项卡）",
-                Childrens = new List<ComponentList>()
-                {
-                    new ComponentList("AlignWithTitle","Blazor/Code/Shared/Examples/masa/tabs/AlignWithTitle"),
-                    new ComponentList("CenterActive","Blazor/Code/Shared/Examples/masa/tabs/CenterActive"),
-                    new ComponentList("Content","Blazor/Code/Shared/Examples/masa/tabs/Content"),
-                    new ComponentList("CustomIcons","Blazor/Code/Shared/Examples/masa/tabs/CustomIcons"),
-                    new ComponentList("DesktopTabs","Blazor/Code/Shared/Examples/masa/tabs/DesktopTabs"),
-                    new ComponentList("DynamicHeight","Blazor/Code/Shared/Examples/masa/tabs/DynamicHeight"),
-                    new ComponentList("DynamicTabs","Blazor/Code/Shared/Examples/masa/tabs/DynamicTabs"),
-                    new ComponentList("FixedTabs","Blazor/Code/Shared/Examples/masa/tabs/FixedTabs"),
-                    new ComponentList("Grow","Blazor/Code/Shared/Examples/masa/tabs/Grow"),
-                    new ComponentList("IconAndText","Blazor/Code/Shared/Examples/masa/tabs/IconAndText"),
-                    new ComponentList("Pagination","Blazor/Code/Shared/Examples/masa/tabs/Pagination"),
-                    new ComponentList("Right","Blazor/Code/Shared/Examples/masa/tabs/Right"),
-                    new ComponentList("TabItems","Blazor/Code/Shared/Examples/masa/tabs/TabItems"),
-                    new ComponentList("Usage","Blazor/Code/Shared/Examples/masa/tabs/Usage"),
-                    new ComponentList("VerticalTabs","Blazor/Code/Shared/Examples/masa/tabs/VerticalTabs"),
-                    new ComponentList("OverflowToMenu", "Blazor/Code/Shared/Examples/masa/tabs/OverflowToMenu")
-                }
-            });
+                new("AlignWithTitle", "/masa/tabs/AlignWithTitle"),
+                new("CenterActive", "/masa/tabs/CenterActive"),
+                new("Content", "/masa/tabs/Content"),
+                new("CustomIcons", "/masa/tabs/CustomIcons"),
+                new("DesktopTabs", "/masa/tabs/DesktopTabs"),
+                new("DynamicHeight", "/masa/tabs/DynamicHeight"),
+                new("DynamicTabs", "/masa/tabs/DynamicTabs"),
+                new("FixedTabs", "/masa/tabs/FixedTabs"),
+                new("Grow", "/masa/tabs/Grow"),
+                new("IconAndText", "/masa/tabs/IconAndText"),
+                new("Pagination", "/masa/tabs/Pagination"),
+                new("Right", "/masa/tabs/Right"),
+                new("TabItems", "/masa/tabs/TabItems"),
+                new("Usage", "/masa/tabs/Usage"),
+                new("VerticalTabs", "/masa/tabs/VerticalTabs"),
+                new("OverflowToMenu", "/masa/tabs/OverflowToMenu")
+            }
+        });
 
         components.Add(new ComponentList()
+        {
+            Title = "Toolbars（工具栏）",
+            Childrens = new List<ComponentList>()
             {
-                Title = "Toolbars（工具栏）",
-                Childrens = new List<ComponentList>()
-                {
-                    new ComponentList("Background","Blazor/Code/Shared/Examples/masa/toolbars/Background"),
-                    new ComponentList("Collapse","Blazor/Code/Shared/Examples/masa/toolbars/Collapse"),
-                    new ComponentList("ContextualActionBar","Blazor/Code/Shared/Examples/masa/toolbars/ContextualActionBar"),
-                    new ComponentList("DenseToolbars","Blazor/Code/Shared/Examples/masa/toolbars/DenseToolbars"),
-                    new ComponentList("Extended","Blazor/Code/Shared/Examples/masa/toolbars/Extended"),
-                    new ComponentList("ExtensitionHeight","Blazor/Code/Shared/Examples/masa/toolbars/ExtensitionHeight"),
-                    new ComponentList("FlexibleAndCardToolbar","Blazor/Code/Shared/Examples/masa/toolbars/FlexibleAndCardToolbar"),
-                    new ComponentList("FloatingWithSearch","Blazor/Code/Shared/Examples/masa/toolbars/FloatingWithSearch"),
-                    new ComponentList("LightAndDark","Blazor/Code/Shared/Examples/masa/toolbars/LightAndDark"),
-                    new ComponentList("ProminentToolbars","Blazor/Code/Shared/Examples/masa/toolbars/ProminentToolbars"),
-                    new ComponentList("Variations", "Blazor/Code/Shared/Examples/masa/toolbars/Variations")
-                }
-            });
+                new("Background", "/masa/toolbars/Background"),
+                new("Collapse", "/masa/toolbars/Collapse"),
+                new("ContextualActionBar", "/masa/toolbars/ContextualActionBar"),
+                new("DenseToolbars", "/masa/toolbars/DenseToolbars"),
+                new("Extended", "/masa/toolbars/Extended"),
+                new("ExtensitionHeight", "/masa/toolbars/ExtensitionHeight"),
+                new("FlexibleAndCardToolbar", "/masa/toolbars/FlexibleAndCardToolbar"),
+                new("FloatingWithSearch", "/masa/toolbars/FloatingWithSearch"),
+                new("LightAndDark", "/masa/toolbars/LightAndDark"),
+                new("ProminentToolbars", "/masa/toolbars/ProminentToolbars"),
+                new("Variations", "/masa/toolbars/Variations")
+            }
+        });
+        
+        
         components.Add(new ComponentList()
+        {
+            Title = "Bottom navigation (底部导航栏)",
+            Childrens = new List<ComponentList>()
             {
-                Title = "Tooltips（工具提示）",
-                Childrens = new List<ComponentList>()
-                {
-                    new ComponentList("Alignment","Blazor/Code/Shared/Examples/masa/tooltips/Alignment"),
-                    new ComponentList("Usage","Blazor/Code/Shared/Examples/masa/tooltips/Usage"),
-                    new ComponentList("Visibility","Blazor/Code/Shared/Examples/masa/tooltips/Visibility")
-                }
-            });
+                new("Color", "/masa/bottomNavigation/Color"),
+                new("Grow", "/masa/bottomNavigation/Grow"),
+                new("HideOnScroll", "/masa/bottomNavigation/HideOnScroll"),
+                new("Horizontal", "/masa/bottomNavigation/Horizontal"),
+                new("ScrollThreshold", "/masa/bottomNavigation/ScrollThreshold"),
+                new("Shift", "/masa/bottomNavigation/Shift"),
+                new("Toggle", "/masa/bottomNavigation/Toggle"),
+                new("UsageTemplate", "/masa/bottomNavigation/UsageTemplate")
+            }
+        });
+
         components.Add(new ComponentList()
+        {
+            Title = "Tooltips（工具提示）",
+            Childrens = new List<ComponentList>()
             {
-                Title = "Treeview（树形视图）",
-                Childrens = new List<ComponentList>()
-                {
-                    new ComponentList("Activatable","Blazor/Code/Shared/Examples/masa/treeview/Activatable"),
-                    new ComponentList("AppendAndLabel","Blazor/Code/Shared/Examples/masa/treeview/AppendAndLabel"),
-                    new ComponentList("Color","Blazor/Code/Shared/Examples/masa/treeview/Color"),
-                    new ComponentList("Dense","Blazor/Code/Shared/Examples/masa/treeview/Dense"),
-                    new ComponentList("Hoverable","Blazor/Code/Shared/Examples/masa/treeview/Hoverable"),
-                    new ComponentList("ItemDisabled","Blazor/Code/Shared/Examples/masa/treeview/ItemDisabled"),
-                    new ComponentList("LoadChildren","Blazor/Code/Shared/Examples/masa/treeview/LoadChildren"),
-                    new ComponentList("OpenAll","Blazor/Code/Shared/Examples/masa/treeview/OpenAll"),
-                    new ComponentList("Rounded","Blazor/Code/Shared/Examples/masa/treeview/Rounded"),
-                    new ComponentList("SearchAndFilter", "Blazor/Code/Shared/Examples/masa/treeview/SearchAndFilter"),
-                    new ComponentList("SelectableIcons","Blazor/Code/Shared/Examples/masa/treeview/SelectableIcons"),
-                    new ComponentList("SelectColor","Blazor/Code/Shared/Examples/masa/treeview/SelectColor"),
-                    new ComponentList("SelectType","Blazor/Code/Shared/Examples/masa/treeview/SelectType"),
-                    new ComponentList("Shaped","Blazor/Code/Shared/Examples/masa/treeview/Shaped"),
-                    new ComponentList("Usage","Blazor/Code/Shared/Examples/masa/treeview/Usage")
-                }
-            });
+                new("Alignment", "/masa/tooltips/Alignment"),
+                new("Usage", "/masa/tooltips/Usage"),
+                new("Visibility", "/masa/tooltips/Visibility")
+            }
+        });
+        components.Add(new ComponentList()
+        {
+            Title = "Treeview（树形视图）",
+            Childrens = new List<ComponentList>()
+            {
+                new("Activatable", "/masa/treeview/Activatable"),
+                new("AppendAndLabel", "/masa/treeview/AppendAndLabel"),
+                new("Color", "/masa/treeview/Color"),
+                new("Dense", "/masa/treeview/Dense"),
+                new("Hoverable", "/masa/treeview/Hoverable"),
+                new("ItemDisabled", "/masa/treeview/ItemDisabled"),
+                new("LoadChildren", "/masa/treeview/LoadChildren"),
+                new("OpenAll", "/masa/treeview/OpenAll"),
+                new("Rounded", "/masa/treeview/Rounded"),
+                new("SearchAndFilter", "/masa/treeview/SearchAndFilter"),
+                new("SelectableIcons", "/masa/treeview/SelectableIcons"),
+                new("SelectColor", "/masa/treeview/SelectColor"),
+                new("SelectType", "/masa/treeview/SelectType"),
+                new("Shaped", "/masa/treeview/Shaped"),
+                new("Usage", "/masa/treeview/Usage")
+            }
+        });
 
 
         base.OnInitialized();

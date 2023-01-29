@@ -41,6 +41,7 @@ import { promisify } from '@opensumi/ide-core-common/lib/browser-fs/util';
 import * as fs from 'fs';
 import axios from 'axios'
 import { parseUris } from 'web-lite/utils';
+import { getQueryStringByName } from 'src/url.helper';
 const REFRESH: Command = {
   id: 'test.refresh',
   iconClass: getIcon('refresh'),
@@ -101,16 +102,10 @@ export class SampleContribution
   @Autowired(IMainLayoutService)
   layoutService: IMainLayoutService;
 
-  getQueryStringByName(name) {
-    var result = location.search.match(new RegExp('[?&]' + name + '=([^&]+)', 'i'));
 
-    if (result == null || result.length < 1) {
-      return '';
-    }
-    return result[1];
-  }
 
   onDidStart() {
+
     this.appConfig.extensionCandidate = [
       {
         path: './connector',
@@ -118,17 +113,12 @@ export class SampleContribution
         isDevelopment: true,
       },
     ];
-    var hash =  location.hash.startsWith('#') && location.hash.indexOf('github') > -1 ? location.hash.split('#')[1] : null;
-    if(hash){
-      var parseUri =  parseUris(hash);
-      var uri = new URI(`file://github/${parseUri.owner}/${parseUri.name}/${parseUri.specifiedFile}`);
-      
-      // TODO: 如果文件树层较深，无法打开，以为文件并没有被注册到资源中
-      this.editorService.open(uri,{
-        disableNavigate:false
-      });
-    }
+
+    this.getCode()
     
+    this.editorService.onCursorChange(value=>{
+      console.log(value);
+    })
     this.layoutService.toggleSlot('right', true, 500);
     this.layoutService.collectViewComponent(
       {
@@ -187,6 +177,25 @@ export class SampleContribution
         );
       }
     });
+  }
+
+  getCode(){
+    
+    var hash =  getQueryStringByName("git");
+
+    if(hash){
+      var parseUri =  parseUris(hash);
+      var uri = new URI(`file://github/${parseUri.owner}/${parseUri.name}/${parseUri.specifiedFile}`);
+      
+      this.editorService.open(uri, {
+        preview: false,
+        focus: true,
+        forceOpenType:{
+          type:'code'
+        },
+        label: parseUri.specifiedFile,
+      });
+    }
   }
 
   registerMenus(registry: IMenuRegistry) {

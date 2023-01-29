@@ -1,8 +1,9 @@
 import { Autowired, Injectable } from '@opensumi/di';
 import { URI, Uri, AppConfig } from '@opensumi/ide-core-browser';
+import { getQueryStringByName } from 'src/url.helper';
 
 import { ICodeAPIProvider, ICodePlatform, IRepositoryModel, CodePlatform, TreeEntry } from '../code-api/common/types';
-import { DEFAULT_URL, parseUri } from '../utils';
+import { DEFAULT_URL, parseUri, parseUris } from '../utils';
 
 import { AbstractHttpFileService } from './browser-fs-provider';
 
@@ -44,8 +45,7 @@ export class HttpFileService extends AbstractHttpFileService {
       commit: '',
     };
 
-    const hash =
-      location.hash.startsWith('#') && location.hash.indexOf('github') > -1 ? location.hash.split('#')[1] : DEFAULT_URL;
+    const hash = getQueryStringByName('git') ? getQueryStringByName('git') : DEFAULT_URL;
     const { branch } = parseUri(hash);
 
     try {
@@ -74,9 +74,6 @@ export class HttpFileService extends AbstractHttpFileService {
         console.error(err);
         return [];
       });
-
-      console.log('tree',tree);
-      
     tree.forEach((item) => {
       map[item.path] = item;
     });
@@ -86,7 +83,6 @@ export class HttpFileService extends AbstractHttpFileService {
   }
 
   private pathToTree(files: { [filename: string]: TreeEntry }) {
-    // // https://stackoverflow.com/questions/54424774/how-to-convert-an-array-of-paths-into-tree-object
     const result: HttpTreeList = [];
     // helper 的对象
     const accumulator = { __result__: result };
@@ -122,6 +118,8 @@ export class HttpFileService extends AbstractHttpFileService {
   }
 
   async readFile(uri: Uri, encoding?: string): Promise<string> {
+    console.log(uri);
+
     const _uri = new URI(uri);
     const relativePath = URI.file(this.appConfig.workspaceDir).relative(_uri)!.toString();
     if (this.fileMap[relativePath].mode === 'new') {

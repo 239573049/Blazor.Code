@@ -2,12 +2,14 @@
 <div>
 
     <MTextField @bind-Value="Value"
-                Solo
-                OnAppendOuterClick="Search"
-                AppendOuterIcon=" mdi-arrow-left">
+                Solo>
+                <AppendContent>
+
+                    <MButton OnClick="Search">搜索</MButton>
+                </AppendContent>
     </MTextField>
 
-    <MList Subheader>
+    <MList Subheader >
         @if (NugetListDto.data != null)
         {
             @foreach (var chat in NugetListDto.data)
@@ -23,16 +25,13 @@
                     <MListItemContent>
                         <MListItemTitle>@chat.title</MListItemTitle>
                     </MListItemContent>
-                    @* *@
-                    @* <MListItemIcon> *@
-                    @*      *@
-                    @* </MListItemIcon> *@
+                    <MButton OnClick="()=>AddPack(chat)">加入包</MButton>
                 </MListItem>
             }
         }
     </MList>
     <div class="text-center">
-        <MPagination Value="skip" Length="page" ValueChanged="PageChanged"></MPagination>
+        <MPagination Value="skip" Length="page" TotalVisible="7" ValueChanged="PageChanged"></MPagination>
     </div>
 </div>
 
@@ -65,8 +64,13 @@
 
     private async Task Search()
     {
-        NugetListDto = await NugetService.SearchAsync(Value, skip - 1, take);
+        NugetListDto = await NugetService.SearchAsync(Value, (skip - 1) * take, take);
         StateHasChanged();
+    }
+
+    private async Task AddPack(Datum datum)
+    {
+        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(datum));
     }
 
     private async Task PageChanged(int i)

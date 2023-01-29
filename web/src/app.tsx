@@ -10,6 +10,7 @@ import { DEFAULT_URL, parseUri } from '../web-lite/utils';
 import { CommonBrowserModules } from './common-modules';
 import { renderApp } from './render-app';
 import './styles.less';
+import { getQueryStringByName } from './url.helper';
 
 // 视图和slot插槽的对应关系
 const layoutConfig = {
@@ -42,9 +43,11 @@ const layoutConfig = {
 // 请求 github 仓库地址 在hash上添加地址即可 如 http://0.0.0.0:8081/#https://github.com/opensumi/core
 // 支持分支及tag  如 http://0.0.0.0:8081/#https://github.com/opensumi/core/tree/v2.15.0
 
+
+
 const hash =
-  location.hash.startsWith('#') && location.hash.indexOf('github') > -1
-    ? location.hash.split('#')[1]
+  getQueryStringByName("git")
+    ? getQueryStringByName("git")
     : DEFAULT_URL;
 
 const { platform, owner, name } = parseUri(hash);

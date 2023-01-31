@@ -40,6 +40,10 @@ builder.Services.AddMasaCodeShared();
 app.Services.UseServiceProvider();
 ```
 
+## 如何调试
+
+由于ide 和 webassembly是独立的俩个项目，无法一块运行，所以在调试的时候较困难，可以使用nginx代理，将前端和webassembly项目代理到一个端口，可以使用nginx文件夹下面的docker-compose运行，如果有必要可以修改端口 run起来以后访问`http://localhost:8808/` 查看效果，需要将前端项目和web assembly俩个项目运行起来！
+
 ## 效果预览：
 
 ![](./img/effectiveness.gif)

@@ -5,7 +5,15 @@
 
 ## 准备前端项目环境
 
-1. 安装依赖
+0. 前提
+
+Python环境  
+[Python Downloads](https://www.python.org/downloads/)  
+
+VC++ 环境  
+[Build Tools for Visual Studio 2017 (version 15.9) Downloads](https://my.visualstudio.com/Downloads?q=visual%20studio%202017&wt.mc_id=o~msft~vscom~older-downloads)
+
+1. 安装依赖 
 
 ```shell
 yarn
@@ -15,6 +23,20 @@ yarn
 
 ```shell
 yarn start
+```
+
+3. 出现错误 digital envelope routines::unsupported
+
+解决办法：设置环境变量NODE_OPTIONS=--openssl-legacy-provider
+
+powershell
+```powershell
+$env:NODE_OPTIONS='--openssl-legacy-provider'
+```
+
+bash
+```bash
+export NODE_OPTIONS='--openssl-legacy-provider'
 ```
 
 ## 对于前端节目的修改

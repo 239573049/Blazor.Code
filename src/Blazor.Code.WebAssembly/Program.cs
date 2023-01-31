@@ -6,7 +6,6 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.RootComponents.RegisterAsCustomElement<DynamicRendering>("render-razor");
 builder.RootComponents.RegisterAsCustomElement<GlobalUsing>("global-using");
-builder.RootComponents.RegisterAsCustomElement<MasaList>("masa-list");
 builder.RootComponents.RegisterAsCustomElement<AssemblyLoad>("assembly-load");
 
 builder.RootComponents.Add<HeadOutlet>("head::after");

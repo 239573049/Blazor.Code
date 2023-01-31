@@ -18,7 +18,7 @@ import { IStatusBarService } from '@opensumi/ide-status-bar';
 import { IWorkspaceService } from '@opensumi/ide-workspace';
 import { IFileServiceClient } from '@opensumi/ide-file-service';
 import { IMainLayoutService } from '@opensumi/ide-main-layout';
-import { RenderView, UsingList, MasaList, BootstrapList, AssemblyLoad } from './razor/render.view';
+import { RenderView, UsingList, AssemblyLoad } from './razor/render.view';
 import { IMenuRegistry, MenuContribution, MenuId } from '@opensumi/ide-core-browser/lib/menu/next';
 import {
   BrowserEditorContribution,
@@ -129,20 +129,6 @@ export class SampleContribution
         },
         priority: 4,
         weight: 4,
-      },
-      'explorer',
-      { name: 'OpenSumi' },
-    );
-
-    this.layoutService.collectViewComponent(
-      {
-        id: 'masa-list-view',
-        name: 'Masa组件预览',
-        component: () => {
-          return <MasaList />;
-        },
-        priority: 3,
-        weight: 3,
       },
       'explorer',
       { name: 'OpenSumi' },

@@ -24,28 +24,14 @@ class UsingList extends React.Component {
   }
 }
 
-class MasaList extends React.Component{
-  render() {
-    return(<masa-list></masa-list>)
-  }
-}
-
 class AssemblyLoad extends React.Component{
   render(): React.ReactNode {
     return (<assembly-load></assembly-load>)
   }
 }
 
-class BootstrapList extends React.Component{
-  render(): React.ReactNode {
-    return(<bootstrap-list></bootstrap-list>)
-  }
-}
-
 export {
   RenderView,
   UsingList,
-  MasaList,
-  BootstrapList,
   AssemblyLoad
 }

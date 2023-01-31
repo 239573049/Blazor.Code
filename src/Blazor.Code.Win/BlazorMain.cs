@@ -15,7 +15,6 @@ public partial class BlazorMain : Form
         services.AddBlazorCodeShared(Shared.CodeEnvironment.Server);
         blazor.RootComponents.RegisterAsCustomElement<DynamicRendering>("render-razor");
         blazor.RootComponents.RegisterAsCustomElement<GlobalUsing>("global-using");
-        blazor.RootComponents.RegisterAsCustomElement<MasaList>("masa-list");
         blazor.RootComponents.RegisterAsCustomElement<AssemblyLoad>("assembly-load");
         blazor.HostPage = "wwwroot\\index.html";
         blazor.Services = services.BuildServiceProvider();

@@ -23,36 +23,6 @@
 	</ItemGroup>
 
 	<!--包含的组件-->
-	<ItemGroup>
-		<ExamplesSourceFile Include="Examples\**\**\*.razor" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Include="Examples\masa\dragZone\Clone.razor" />
-	  <None Include="Examples\masa\dragZone\Filter.razor" />
-	  <None Include="Examples\masa\dragZone\Group.razor" />
-	  <None Include="Examples\masa\dragZone\MultiyZone.razor" />
-	  <None Include="Examples\masa\dragZone\Options.razor" />
-	  <None Include="Examples\masa\dragZone\Pull.razor" />
-	  <None Include="Examples\masa\dragZone\Put.razor" />
-	  <None Include="Examples\masa\dragZone\Sort.razor" />
-	  <None Include="Examples\masa\dragZone\Usage.razor" />
-	  <None Include="Examples\masa\tabs\AlignWithTitle.razor" />
-	  <None Include="Examples\masa\tabs\CenterActive.razor" />
-	  <None Include="Examples\masa\tabs\Content.razor" />
-	  <None Include="Examples\masa\tabs\CustomIcons.razor" />
-	  <None Include="Examples\masa\tabs\DesktopTabs.razor" />
-	  <None Include="Examples\masa\tabs\DynamicHeight.razor" />
-	  <None Include="Examples\masa\tabs\DynamicTabs.razor" />
-	  <None Include="Examples\masa\tabs\FixedTabs.razor" />
-	  <None Include="Examples\masa\tabs\Grow.razor" />
-	  <None Include="Examples\masa\tabs\IconAndText.razor" />
-	  <None Include="Examples\masa\tabs\OverflowToMenu.razor" />
-	  <None Include="Examples\masa\tabs\Pagination.razor" />
-	  <None Include="Examples\masa\tabs\Right.razor" />
-	  <None Include="Examples\masa\tabs\TabItems.razor" />
-	  <None Include="Examples\masa\tabs\Usage.razor" />
-	  <None Include="Examples\masa\tabs\VerticalTabs.razor" />
-	</ItemGroup>
 
 	<!--生成组件的示例代码-->
 	<Target Name="CopyExmaplesToTxt" AfterTargets="Build">

@@ -18,6 +18,33 @@ public static class BlazorCodeSharedExtension
 
     public static List<PortableExecutableReference> PortableExecutableReferences = new();
 
+    private static List<string> Assemblys = new List<string>()
+    {
+        "WindowsBase",
+        "System.Xml",
+        "System.IO.FileSystem",
+        "System.Xml.XmlSerializer",
+        "System.Xml.XmlDocument",
+        "System.Xml.XPath",
+        "System.Xml.XPath.XDocument",
+        "System.Xml.XDocument",
+        "System.Xml.Serialization",
+        "System.Private.Xml.Linq",
+        "System.Drawing",
+        "Microsoft.Win32.Registry",
+        "Microsoft.Win32.Primitives",
+        "System.Xml.ReaderWriter",
+        "Microsoft.VisualBasic",
+        "Microsoft.VisualBasic.Core",
+        "System.Xml.Linq",
+        "Microsoft.VisualBasic.Core",
+        "Masa.Blazor.Extensions.Languages.Razor",
+        "System.Windows",
+        "System.IO.Compression.dll",
+        "System.Private.Xml",
+
+    };
+
     public static async void AddBlazorCodeShared(this IServiceCollection services, CodeEnvironment environment = CodeEnvironment.WebAssembly)
     {
         CodeEnvironment = environment;
@@ -30,7 +57,7 @@ public static class BlazorCodeSharedExtension
 
         services.AddSingleton(typeof(KeyEventBus<>));
         services.AddScoped<NugetService>();
-        
+
         await Task.Run(async () =>
         {
             await GetReferenceAsync(services);
@@ -46,6 +73,10 @@ public static class BlazorCodeSharedExtension
         {
             try
             {
+                if(Assemblys.Any(x=>assembly.GetName().Name == x))
+                {
+                    return;
+                }
                 if (CodeEnvironment == CodeEnvironment.WebAssembly)
                 {
                     if (httpClient == null)

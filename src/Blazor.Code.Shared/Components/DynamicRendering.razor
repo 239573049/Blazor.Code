@@ -26,27 +26,27 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-    // 订阅编译事件
+        // 订阅编译事件
         _KeyEventBus.Subscription(BlazorCodeConstant.RenderComponent, async (value) =>
         {
             try
             {
                 componenType = RazorCompile.CompileToType(new CompileRazorOptions
-                {
-                    Code = value,
-                    ConcurrentBuild = false
-                });
+                    {
+                        Code = value,
+                        ConcurrentBuild = false
+                    });
 
                 _ = InvokeAsync(StateHasChanged);
             }
             catch (Exception e)
             {
-                await JsRuntime.InvokeVoidAsync("window.postMessage", new { type = "error", message = e.Message });
-                componenType = null;
+                await JsRuntime
+                .InvokeVoidAsync("window.postMessage", new { type = "error", message = e.Message + Environment.NewLine + e.Source + Environment.NewLine + e.StackTrace });
             }
         });
 
-    // bootstrap 和 masa的组件需要单独处理
+        // bootstrap 和 masa的组件需要单独处理
 
         _KeyEventBus.Subscription("preview-masa", async (value) =>
         {

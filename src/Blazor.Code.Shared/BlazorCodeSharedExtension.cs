@@ -18,31 +18,22 @@ public static class BlazorCodeSharedExtension
 
     public static List<PortableExecutableReference> PortableExecutableReferences = new();
 
-    private static List<string> Assemblys = new List<string>()
+    private static List<string> Assemblys = new()
     {
-        "WindowsBase",
-        "System.Xml",
-        "System.IO.FileSystem",
-        "System.Xml.XmlSerializer",
-        "System.Xml.XmlDocument",
-        "System.Xml.XPath",
-        "System.Xml.XPath.XDocument",
-        "System.Xml.XDocument",
-        "System.Xml.Serialization",
-        "System.Private.Xml.Linq",
-        "System.Drawing",
-        "Microsoft.Win32.Registry",
-        "Microsoft.Win32.Primitives",
-        "System.Xml.ReaderWriter",
-        "Microsoft.VisualBasic",
-        "Microsoft.VisualBasic.Core",
-        "System.Xml.Linq",
-        "Microsoft.VisualBasic.Core",
-        "Masa.Blazor.Extensions.Languages.Razor",
-        "System.Windows",
-        "System.IO.Compression.dll",
-        "System.Private.Xml",
-
+        "BlazorComponent",
+        "Masa.Blazor",
+        "OneOf",
+        "FluentValidation",
+        "FluentValidation.DependencyInjectionExtensions",
+        "System",
+        "Microsoft.AspNetCore.Components",
+        "System.Linq.Expressions",
+        "System.Net.Http.Json",
+        "System.Private.CoreLib",
+        "Microsoft.AspNetCore.Components.Web",
+        "System.Collections",
+        "System.Linq",
+        "System.Runtime"
     };
 
     public static async void AddBlazorCodeShared(this IServiceCollection services, CodeEnvironment environment = CodeEnvironment.WebAssembly)
@@ -69,22 +60,18 @@ public static class BlazorCodeSharedExtension
     {
         HttpClient? httpClient = null;
 
-        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+        foreach (var assembly in Assemblys)
         {
             try
             {
-                if(Assemblys.Any(x=>assembly.GetName().Name == x))
-                {
-                    return;
-                }
                 if (CodeEnvironment == CodeEnvironment.WebAssembly)
                 {
                     if (httpClient == null)
                     {
                         httpClient = services.BuildServiceProvider().GetService<HttpClient>();
                     }
-                    using var stream = await httpClient!.GetStreamAsync($"_framework/{assembly.GetName().Name}.dll");
-                    if (stream.Length > 0)
+                    using var stream = await httpClient!.GetStreamAsync($"_framework/{assembly}.dll");
+                    if (stream?.Length > 0)
                     {
                         PortableExecutableReferences?.Add(MetadataReference.CreateFromStream(stream));
                     }
@@ -92,7 +79,7 @@ public static class BlazorCodeSharedExtension
                 else
                 {
                     // Server是在服务器运行可以直接获取文件 如果是嵌入到maui或者winform的也可以直接获取
-                    PortableExecutableReferences?.Add(MetadataReference.CreateFromFile(assembly.Location));
+                    //PortableExecutableReferences?.Add(MetadataReference.CreateFromFile(assembly.Location));
                 }
             }
             catch (Exception e)

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>在线编辑器</title>
+    <base href="/" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="manifest.json" rel="manifest" />
+    <link href="_content/Masa.Blazor/css/masa-blazor.min.css"
+          rel="stylesheet" />
+    <link href="https://cdn.masastack.com/npm/@mdi/font@5.x/css/materialdesignicons.min.css"
+          rel="stylesheet" />
+</head>
+
+<body>
+    <style>
+        .spinner {
+            margin: 100px auto;
+            width: 50px;
+            height: 60px;
+            text-align: center;
+            font-size: 10px;
+        }
+
+            .spinner > div {
+                background-color: #67CF22;
+                height: 100%;
+                width: 6px;
+                display: inline-block;
+                -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
+                animation: stretchdelay 1.2s infinite ease-in-out;
+            }
+
+            .spinner .rect2 {
+                -webkit-animation-delay: -1.1s;
+                animation-delay: -1.1s;
+            }
+
+            .spinner .rect3 {
+                -webkit-animation-delay: -1.0s;
+                animation-delay: -1.0s;
+            }
+
+            .spinner .rect4 {
+                -webkit-animation-delay: -0.9s;
+                animation-delay: -0.9s;
+            }
+
+            .spinner .rect5 {
+                -webkit-animation-delay: -0.8s;
+                animation-delay: -0.8s;
+            }
+
+        @-webkit-keyframes stretchdelay {
+            0%, 40%, 100% {
+                -webkit-transform: scaleY(0.4)
+            }
+
+            20% {
+                -webkit-transform: scaleY(1.0)
+            }
+        }
+
+        @keyframes stretchdelay {
+            0%, 40%, 100% {
+                transform: scaleY(0.4);
+                -webkit-transform: scaleY(0.4);
+            }
+
+            20% {
+                transform: scaleY(1.0);
+                -webkit-transform: scaleY(1.0);
+            }
+        }
+
+        .info {
+            color: #fff;
+            font-family: 'Roboto Condensed';
+            font-size: 22px;
+            line-height: 32px;
+        }
+
+    </style>
+    <div id="app">
+        <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+        </div>
+        <span class="info">请您稍等，我们的WebAssembly程序正在预热中</span>
+    </div>
+
+    <div id="blazor-error-ui">
+        出现未知异常
+        <a href="" class="reload">重启</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
+    <!--<script>
+        navigator.serviceWorker.register("service-worker.js");
+    </script>-->
+    <script src="_content/BlazorComponent/js/blazor-component.js"></script>
+    <script>
+        var require = {
+            paths: {
+                vs: "https://cdn.masastack.com/npm/monaco-editor/0.34.1/min/vs",
+            },
+        };
+    </script>
+    <script src="https://cdn.masastack.com/npm/monaco-editor/0.34.1/min/vs/loader.js"></script>
+    <script src="https://cdn.masastack.com/npm/monaco-editor/0.34.1/min/vs/editor/editor.main.nls.js"></script>
+    <script src="https://cdn.masastack.com/npm/monaco-editor/0.34.1/min/vs/editor/editor.main.js"></script>
+    <script type="module">
+        import { BrotliDecode } from "./js/decode.min.js";
+        Blazor.start({
+            loadBootResource: function (type, name, defaultUri, integrity) {
+                if (type !== "dotnetjs" && location.hostname !== 'localhost') {
+                    return (async function () {
+                        const response = await fetch(defaultUri + ".br", {
+                            cache: "no-cache",
+                        });
+                        if (!response.ok) {
+                            throw new Error(response.statusText);
+                        }
+                        const originalResponseBuffer = await response.arrayBuffer();
+                        const originalResponseArray = new Int8Array(
+                            originalResponseBuffer
+                        );
+                        const decompressedResponseArray = BrotliDecode(
+                            originalResponseArray
+                        );
+
+                        const contentType =
+                            type === "dotnetwasm"
+                                ? "application/wasm"
+                                : "application/octet-stream";
+                        return new Response(decompressedResponseArray, {
+                            headers: { "content-type": contentType },
+                        });
+                    })();
+                }
+            },
+        });
+    </script>
+</body>
+</html>

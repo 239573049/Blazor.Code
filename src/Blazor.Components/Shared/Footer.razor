@@ -1,0 +1,66 @@
+﻿@inject IJSRuntime JSRuntime
+
+<MFooter App>
+    <div class="friend-chain">
+        @foreach (var item in _items)
+        {
+            <MListItem Style="max-height: 30px;min-height: 30px;" OnClick="async()=>await GotoUrl(item.Href)">
+                <MListItemContent>
+                    <MListItemTitle>@item.Value</MListItemTitle>
+                </MListItemContent>
+            </MListItem>
+        }
+    </div>
+    <div class="web-info">
+        由.NET 7 WebAssembly支持
+    </div>
+    <div class="friend-chain" style="margin-right: auto;">
+        <MListItem OnClick="()=>GotoUrl(Contribution)" Style="max-height: 30px;min-height: 30px;">
+            <MListItemContent>
+                <MListItemTitle>贡献</MListItemTitle>
+            </MListItemContent>
+        </MListItem>
+    </div>
+</MFooter>
+
+@code {
+
+    private Item[] _items = new Item[]
+    {
+       new Item { Value= "Token",Href="https://blog.tokengo.top/" },
+       new Item { Value= "Masa Blazor",Href="https://docs.masastack.com/blazor/getting-started/installation"},
+       new Item { Value= "沙漠尽头的狼",Href="https://dotnet9.com/"}
+    };
+
+    class Item
+    {
+        /// <summary>
+        /// 内容
+        /// </summary>
+        public string Value { get; set; }
+
+        /// <summary>
+        /// 外链
+        /// </summary>
+        public string Href { get; set; }
+    }
+
+    private const string Contribution = "https://github.com/239573049/Blazor.Code/compare";
+
+    private async Task GotoUrl(string url)
+    {
+        await JSRuntime.InvokeVoidAsync("window.open", url, "_blank");
+    }
+}
+
+<style>
+    .friend-chain {
+    }
+
+    .web-info {
+        margin-right: auto;
+        margin-top: auto;
+        text-align: center;
+        width: calc(100% - 195px);
+    }
+</style>

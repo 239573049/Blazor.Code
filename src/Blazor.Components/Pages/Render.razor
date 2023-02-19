@@ -1,0 +1,93 @@
+﻿@page "/"
+
+@inject HttpClient HttpClient
+@inject IPopupService PopupService
+@inject IJSRuntime JSRuntime
+
+<MMain>
+    <MAppBar Dark Color="#00BCD4" App>
+        <MButton Text OnClick="RunCode">运行</MButton>
+        <PModal @bind-Value="settingModalVisible"
+                Persistent
+                Title="设置"
+                Width="500"
+                OnSave="OnSave"
+                OnCancel="OnCancel">
+            <ActivatorContent>
+                <MButton @attributes="@context.Attrs" Text>设置</MButton>
+            </ActivatorContent>
+            <ChildContent>
+                <MTextField @bind-Value="GitHubToken" Label="GitHub Token">
+                </MTextField>
+                <MDivider></MDivider>
+                <MTextField AppendIcon="mdi-reload" OnAppendClick="async()=>{ settingModalVisible =false ;await GetCode();}" @bind-Value="Path" Label="加载文件">
+                </MTextField>
+            </ChildContent>
+            <CancelContent Context="cancel">
+                <MButton Icon OnClick="cancel.Click" Disabled="cancel.Loading">
+                    取消
+                </MButton>
+            </CancelContent>
+            <SaveContent Context="save">
+                <MButton Icon Color="primary" OnClick="save.Click" Disabled="save.Loading" Loading="save.Loading">
+                    保存
+                </MButton>
+            </SaveContent>
+            </PModal>
+
+            <PModal @bind-Value="loadAssemblyVisible"
+                Persistent
+                Title="设置"
+                Width="500"
+                OnSave="LoadAssemblyAsync"
+                OnCancel="()=>loadAssemblyVisible=false">
+            <ActivatorContent>
+                <MButton @attributes="@context.Attrs" Text>加载程序集</MButton>
+            </ActivatorContent>
+            <ChildContent>
+                <MTextField @bind-Value="AssemblyPath" Label="加载的程序集Url">
+                </MTextField>
+            </ChildContent>
+            <CancelContent Context="cancel">
+                <MButton Icon OnClick="cancel.Click" Disabled="cancel.Loading">
+                    取消
+                </MButton>
+            </CancelContent>
+            <SaveContent Context="save">
+                <MButton Icon Color="primary" OnClick="save.Click" Disabled="save.Loading" Loading="save.Loading">
+                    保存
+                </MButton>
+            </SaveContent>
+            </PModal>
+
+            <MSpacer></MSpacer>
+            <MButton Class="ma-2"
+                 Text
+                 Icon
+                 OnClick="async()=> await GotoUrl(GitHub)">
+            <MIcon>mdi-github</MIcon>
+        </MButton>
+        </MAppBar>
+        <MContainer Fluid
+                Style="height: 100%;">
+        <MRow Style="height: 99%;" NoGutters>
+            <MCol Style="height: 100%;"
+                  Md="6">
+                <SMonacoEditor InitializationCompleteHandle="GetCode" EditorOptions="Options" @ref="_monacoEditor" />
+            </MCol>
+            <MCol Md="6">
+                <div style="margin: 5px">
+                    @if (ComponentType == null)
+                    {
+                        <Intro />
+                    }
+                    else
+                    {
+                        <DynamicComponent Type="@ComponentType" />
+                    }
+                </div>
+            </MCol>
+        </MRow>
+    </MContainer>
+
+</MMain>

@@ -1,4 +1,5 @@
-﻿using Masa.Blazor.Extensions.Languages.Razor;
+﻿using System.Text.Json;
+using Masa.Blazor.Extensions.Languages.Razor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.CodeAnalysis;
@@ -12,7 +13,7 @@ public partial class Render
 {
     private SMonacoEditor? _monacoEditor;
 
-    [Parameter] [SupplyParameterFromQuery] public string? Path { get; set; }
+    [Parameter][SupplyParameterFromQuery] public string? Path { get; set; }
 
     private string Code;
 
@@ -82,6 +83,8 @@ public partial class Render
         "System.Runtime"
     };
 
+    public static List<string> LoadAssembly;
+
     private void OnCancel()
     {
         settingModalVisible = false;
@@ -92,7 +95,7 @@ public partial class Render
     {
         settingModalVisible = false;
     }
-    
+
     protected override async Task OnInitializedAsync()
     {
         objRef = DotNetObjectReference.Create(this);
@@ -149,10 +152,21 @@ public partial class Render
 
         await base.OnInitializedAsync();
     }
-    
+
     private async Task GotoUrl(string url)
     {
         await JSRuntime.InvokeVoidAsync("window.open", url, "_blank");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var value = (await JSRuntime.InvokeAsync<string>("window.localStorage.getItem", "assembly")).Replace("'","");
+            LoadAssembly = JsonSerializer.Deserialize<List<string>>(value);
+
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private async Task LoadAssemblyAsync()
@@ -269,6 +283,7 @@ public partial class Render
         }
 
         await PopupService.ToastInfoAsync("首次运行加载组件引用,请稍等...");
+
         foreach (var assembly in Assemblys)
         {
             try

@@ -123,7 +123,7 @@
         }
         Blazor.start({
             loadBootResource: function (type, name, defaultUri, integrity) {
-                data.push({ defaultUri, integrity })
+                data.push('/' + defaultUri + '.' + integrity)
                 window.localStorage.setItem('assembly', JSON.stringify(data))
                 if (type !== "dotnetjs" && location.hostname !== 'localhost') {
                     return (async function () {
@@ -152,6 +152,22 @@
                 }
             },
         });
+    </script>
+    <script>
+        window.openAssembly = null;
+        window.openAssembly = (name, DotNet) => {
+            console.log("测试")
+            caches.match(name)
+                .then(value => {
+                    value.arrayBuffer()
+                        .then(blob => {
+                            await DotNet.invokeMethodAsync("RenderByte", blob)
+                            //var url = (window.URL || window.webkitURL || window || {}).createObjectURL(new Blob([blob]))
+                            //console.log(url, new Blob([blob]))
+                        })
+                })
+        }
+
     </script>
 </body>
 </html>

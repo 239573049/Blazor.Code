@@ -17,7 +17,13 @@ public class HelperJsInterop : IAsyncDisposable
         moduleTask = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
             "import", "./_content/Blazor.Components/helperJsInterop.js").AsTask());
     }
-    
+
+    public async ValueTask OpenFile<T>(string name, DotNetObjectReference<T>? dotNetHelper) where T : class
+    {
+        var module = await moduleTask.Value;
+        await module.InvokeVoidAsync("openAssembly", name, dotNetHelper);
+    }
+
     public async ValueTask DisposeAsync()
     {
         if (moduleTask.IsValueCreated)

@@ -12,9 +12,7 @@ public partial class Render
 {
     private SMonacoEditor? _monacoEditor;
 
-    [Parameter]
-    [SupplyParameterFromQuery]
-    public string? Path { get; set; }
+    [Parameter] [SupplyParameterFromQuery] public string? Path { get; set; }
 
     private string Code;
 
@@ -27,6 +25,9 @@ public partial class Render
     /// </summary>
     private const string GitHub = "https://github.com/239573049/Blazor.Code/tree/master";
 
+    /// <summary>
+    /// 编译引用的程序集
+    /// </summary>
     private static readonly List<PortableExecutableReference> PortableExecutableReferences = new();
 
     /// <summary>
@@ -44,10 +45,24 @@ public partial class Render
     /// </summary>
     private static bool first = true;
 
+    /// <summary>
+    /// GitHub Token
+    /// </summary>
     private string GitHubToken;
 
-    private bool settingModalVisible = false;
+    /// <summary>
+    /// 设置弹窗是否显示
+    /// </summary>
+    private bool settingModalVisible;
 
+    /// <summary>
+    /// 运行按钮加载器
+    /// </summary>
+    private bool RunCodeLoading = false;
+
+    /// <summary>
+    /// 编译器需要使用的程序集
+    /// </summary>
     private static List<string> Assemblys = new()
     {
         "BlazorComponent",
@@ -72,13 +87,15 @@ public partial class Render
         settingModalVisible = false;
     }
 
+    private DotNetObjectReference<Render>? objRef;
     private void OnSave()
     {
         settingModalVisible = false;
     }
-
+    
     protected override async Task OnInitializedAsync()
     {
+        objRef = DotNetObjectReference.Create(this);
         Options = new
         {
             value = @"<MCard Class=""overflow-hidden"">
@@ -132,7 +149,7 @@ public partial class Render
 
         await base.OnInitializedAsync();
     }
-
+    
     private async Task GotoUrl(string url)
     {
         await JSRuntime.InvokeVoidAsync("window.open", url, "_blank");
@@ -176,11 +193,13 @@ public partial class Render
             return;
         }
 
-        Path = Path.Replace("http://", "https://").Replace("https://github.com/", "https://raw.githubusercontent.com/").Replace("/blob/", "/");
+        Path = Path.Replace("http://", "https://").Replace("https://github.com/", "https://raw.githubusercontent.com/")
+            .Replace("/blob/", "/");
         if (!Path.StartsWith("https://raw.githubusercontent.com/"))
         {
             Path = "https://raw.githubusercontent.com/" + Path;
         }
+
         try
         {
             var httpResponseMessage = await HttpClient!.GetAsync(Path);
@@ -191,17 +210,13 @@ public partial class Render
                 if (!string.IsNullOrEmpty(code))
                 {
                     Code = code;
-                    _ = Task.Run(async () =>
-                    {
-                        await RunCode();
-                    });
+                    _ = Task.Run(async () => { await RunCode(); });
                 }
             }
             else
             {
                 await PopupService.ToastErrorAsync("加载文件内容出现异常，异常状态码：" + httpResponseMessage.StatusCode);
             }
-
         }
         catch (Exception e)
         {
@@ -215,6 +230,9 @@ public partial class Render
     /// <returns></returns>
     private async Task RunCode()
     {
+        RunCodeLoading = true;
+        // 不等待加载动画无法执行
+        await Task.Delay(10);
         var code = await _monacoEditor.GetValue();
         if (!string.IsNullOrEmpty(code))
         {
@@ -235,6 +253,8 @@ public partial class Render
                 await PopupService.ToastErrorAsync("编译异常：" + e.Message);
             }
         }
+
+        RunCodeLoading = false;
     }
 
     /// <summary>

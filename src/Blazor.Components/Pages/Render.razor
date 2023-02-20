@@ -1,12 +1,21 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
 
 @inject HttpClient HttpClient
 @inject IPopupService PopupService
 @inject IJSRuntime JSRuntime
+@inject HelperJsInterop HelperJsInterop
+@inject LazyAssemblyLoader AssemblyLoader
 
 <MMain>
     <MAppBar Dark Color="#00BCD4" App>
-        <MButton Text OnClick="RunCode">运行</MButton>
+        <MButton Text
+                 Loading="RunCodeLoading"
+                 Disabled="RunCodeLoading"
+                 class="ma-2"
+                 OnClick="RunCode">
+            运行
+        </MButton>
         <PModal @bind-Value="settingModalVisible"
                 Persistent
                 Title="设置"
@@ -91,3 +100,49 @@
     </MContainer>
 
 </MMain>
+<style>
+	.custom-loader {
+		animation: loader 1s infinite;
+		display: flex;
+	}
+
+	@("@-moz-keyframes") loader {
+		from {
+		transform: rotate(0);
+		}
+
+		to {
+		transform: rotate(360deg);
+		}
+	}
+
+	@("@-webkit-keyframes") loader {
+		from {
+		transform: rotate(0);
+		}
+
+		to {
+		transform: rotate(360deg);
+		}
+	}
+
+	@("@-o-keyframes") loader {
+		from {
+		transform: rotate(0);
+		}
+
+		to {
+		transform: rotate(360deg);
+		}
+	}
+
+	@("@keyframes") loader {
+		from {
+		transform: rotate(0);
+		}
+
+		to {
+		transform: rotate(360deg);
+		}
+	}
+</style>

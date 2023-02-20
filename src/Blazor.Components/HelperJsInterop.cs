@@ -1,12 +1,7 @@
 using Microsoft.JSInterop;
 
 namespace Blazor.Components;
-// This class provides an example of how JavaScript functionality can be wrapped
-// in a .NET class for easy consumption. The associated JavaScript module is
-// loaded on demand when first needed.
-//
-// This class can be registered as scoped DI service and then injected into Blazor
-// components for use.
+
 
 public class HelperJsInterop : IAsyncDisposable
 {
@@ -18,10 +13,16 @@ public class HelperJsInterop : IAsyncDisposable
             "import", "./_content/Blazor.Components/helperJsInterop.js").AsTask());
     }
 
-    public async ValueTask OpenFile<T>(string name, DotNetObjectReference<T>? dotNetHelper) where T : class
+    public async ValueTask OpenAssembly<T>(string code, DotNetObjectReference<T> objectReference) where T : class
     {
         var module = await moduleTask.Value;
-        await module.InvokeVoidAsync("openAssembly", name, dotNetHelper);
+        await module.InvokeVoidAsync("openAssembly", code, objectReference);
+    }
+
+    public async ValueTask RevokeObjectURL(string url)
+    {
+        var module = await moduleTask.Value;
+        await module.InvokeVoidAsync("revokeObjectURL", url);
     }
 
     public async ValueTask DisposeAsync()

@@ -4,8 +4,8 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project>
   <PropertyGroup>
-    <_PublishTargetUrl>D:\code\Blazor.Code\src\Blazor.Code\bin\Release\net7.0\browser-wasm\publish\</_PublishTargetUrl>
-    <History>True|2023-02-19T16:25:38.0503663Z;</History>
+    <_PublishTargetUrl>D:\code\BlazorCode\src\Blazor.Code\bin\Release\net7.0\browser-wasm\publish\</_PublishTargetUrl>
+    <History>True|2023-02-20T16:02:29.5019971Z;True|2023-02-20T23:25:55.6401967+08:00;True|2023-02-20T22:35:24.4861078+08:00;True|2023-02-20T22:26:38.0123126+08:00;True|2023-02-20T22:01:19.1152202+08:00;True|2023-02-20T21:49:45.6104424+08:00;True|2023-02-20T00:25:38.0503663+08:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

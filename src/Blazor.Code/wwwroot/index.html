@@ -118,7 +118,6 @@
         var data = []
         var assembly = window.localStorage.getItem('assembly');
         if (assembly) {
-            console.log(assembly)
             data.push(...JSON.parse(assembly))
         }
         Blazor.start({
@@ -152,22 +151,6 @@
                 }
             },
         });
-    </script>
-    <script>
-        window.openAssembly = null;
-        window.openAssembly = (name, DotNet) => {
-            console.log("测试")
-            caches.match(name)
-                .then(value => {
-                    value.arrayBuffer()
-                        .then(blob => {
-                            await DotNet.invokeMethodAsync("RenderByte", blob)
-                            //var url = (window.URL || window.webkitURL || window || {}).createObjectURL(new Blob([blob]))
-                            //console.log(url, new Blob([blob]))
-                        })
-                })
-        }
-
     </script>
 </body>
 </html>

@@ -1,4 +1,7 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Linq;
+using System.Runtime.Loader;
+using System.Text.Json;
 using Masa.Blazor.Extensions.Languages.Razor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Razor.Language;
@@ -148,7 +151,6 @@ public partial class Render
             theme = "vs-dark" // monaco theme 
         };
 
-        await GetReferenceAsync();
 
         await base.OnInitializedAsync();
     }
@@ -162,9 +164,9 @@ public partial class Render
     {
         if (firstRender)
         {
-            var value = (await JSRuntime.InvokeAsync<string>("window.localStorage.getItem", "assembly")).Replace("'","");
+            var value = (await JSRuntime.InvokeAsync<string>("window.localStorage.getItem", "assembly")).Replace("'", "");
             LoadAssembly = JsonSerializer.Deserialize<List<string>>(value);
-
+            await GetReferenceAsync();
         }
         await base.OnAfterRenderAsync(firstRender);
     }
@@ -238,6 +240,18 @@ public partial class Render
         }
     }
 
+    [JSInvokable("RenderByte")]
+    public async Task RenderByte(string url)
+    {
+        await using var stream = await HttpClient.GetStreamAsync(url);
+        if (stream?.Length > 0)
+        {
+            PortableExecutableReferences?.Add(MetadataReference.CreateFromStream(stream));
+        }
+
+        await HelperJsInterop.RevokeObjectURL(url);
+    }
+
     /// <summary>
     /// 执行代码
     /// </summary>
@@ -284,15 +298,13 @@ public partial class Render
 
         await PopupService.ToastInfoAsync("首次运行加载组件引用,请稍等...");
 
-        foreach (var assembly in Assemblys)
+        var loadAssemblyPath = LoadAssembly.Where(x => Assemblys.Any(a => x.Contains(a)));
+
+        foreach (var assembly in loadAssemblyPath)
         {
             try
             {
-                await using var stream = await HttpClient!.GetStreamAsync($"_framework/{assembly}.dll");
-                if (stream?.Length > 0)
-                {
-                    PortableExecutableReferences?.Add(MetadataReference.CreateFromStream(stream));
-                }
+                await HelperJsInterop.OpenAssembly(assembly, objRef);
             }
             catch (Exception e)
             {

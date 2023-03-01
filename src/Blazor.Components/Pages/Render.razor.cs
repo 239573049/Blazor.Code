@@ -1,14 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.Loader;
-using System.Text.Json;
-using Masa.Blazor.Extensions.Languages.Razor;
+﻿using Masa.Blazor.Extensions.Languages.Razor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using Semi.Design.Blazor;
+using System.Text.Json;
 
 namespace Blazor.Components.Pages;
 
@@ -298,18 +295,33 @@ public partial class Render
 
         await PopupService.ToastInfoAsync("首次运行加载组件引用,请稍等...");
 
-        var loadAssemblyPath = LoadAssembly.Where(x => Assemblys.Any(a => x.Contains(a)));
 
-        foreach (var assembly in loadAssemblyPath)
+        foreach (var assembly in Assemblys)
         {
             try
             {
-                await HelperJsInterop.OpenAssembly(assembly, objRef);
+#if DEBUG
+                var stream = await HttpClient.GetStreamAsync($"_framework/{assembly}.dll");
+#else
+                var stream = await HttpClient.GetStreamAsync($"https://tokenblog.oss-cn-hangzhou.aliyuncs.com/_framework/{assembly}.dll");
+#endif
+                if (stream?.Length > 0)
+                {
+                    PortableExecutableReferences?.Add(MetadataReference.CreateFromStream(stream));
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
             }
+            //var load = LoadAssembly.FirstOrDefault(x => x.Contains(assembly));
+            //try
+            //{
+            //    await HelperJsInterop.OpenAssembly(load, objRef);
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.Message);
+            //}
         }
 
         RazorCompile.Initialized(PortableExecutableReferences, GetRazorExtension);

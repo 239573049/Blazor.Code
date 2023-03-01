@@ -117,13 +117,16 @@
 
         var data = []
         var assembly = window.localStorage.getItem('assembly');
+        let first = true;
         if (assembly) {
-            data.push(...JSON.parse(assembly))
+            first = false;
         }
         Blazor.start({
             loadBootResource: function (type, name, defaultUri, integrity) {
-                data.push('/' + defaultUri + '.' + integrity)
-                window.localStorage.setItem('assembly', JSON.stringify(data))
+                if (first) {
+                    data.push('/' + defaultUri + '.' + integrity);
+                    window.localStorage.setItem('assembly', JSON.stringify(data));
+                }
                 if (type !== "dotnetjs" && location.hostname !== 'localhost') {
                     return (async function () {
                         const response = await fetch(defaultUri + ".br", {

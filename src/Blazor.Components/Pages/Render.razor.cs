@@ -9,14 +9,13 @@ using System.Text.Json;
 
 namespace Blazor.Components.Pages;
 
-public partial class Render
+public partial class Render : IDisposable
 {
     private SMonacoEditor? _monacoEditor;
 
-    [Parameter][SupplyParameterFromQuery] public string? Path { get; set; }
-
-    private string Code;
-
+    [Parameter]
+    [SupplyParameterFromQuery] public string? Path { get; set; }
+    
     private object Options;
 
     private Type? ComponentType;
@@ -91,6 +90,7 @@ public partial class Render
     }
 
     private DotNetObjectReference<Render>? objRef;
+
     private void OnSave()
     {
         settingModalVisible = false;
@@ -161,8 +161,6 @@ public partial class Render
     {
         if (firstRender)
         {
-            var value = (await JSRuntime.InvokeAsync<string>("window.localStorage.getItem", "assembly")).Replace("'", "");
-            LoadAssembly = JsonSerializer.Deserialize<List<string>>(value);
             await GetReferenceAsync();
         }
         await base.OnAfterRenderAsync(firstRender);
@@ -220,11 +218,6 @@ public partial class Render
             {
                 var code = await httpResponseMessage.Content.ReadAsStringAsync();
                 await _monacoEditor.SetValue(code);
-                if (!string.IsNullOrEmpty(code))
-                {
-                    Code = code;
-                    _ = Task.Run(async () => { await RunCode(); });
-                }
             }
             else
             {
@@ -269,17 +262,18 @@ public partial class Render
                 });
                 _ = InvokeAsync(async () =>
                 {
-                    StateHasChanged();
+                    RunCodeLoading = false;
                     await PopupService.ToastInfoAsync("动态编辑代码成功！");
+                    StateHasChanged();
                 });
             }
             catch (Exception e)
             {
                 await PopupService.ToastErrorAsync("编译异常：" + e.Message);
+                RunCodeLoading = false;
+                StateHasChanged();
             }
         }
-
-        RunCodeLoading = false;
     }
 
     /// <summary>
@@ -313,24 +307,22 @@ public partial class Render
             catch (Exception e)
             {
             }
-            //var load = LoadAssembly.FirstOrDefault(x => x.Contains(assembly));
-            //try
-            //{
-            //    await HelperJsInterop.OpenAssembly(load, objRef);
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //}
         }
 
         RazorCompile.Initialized(PortableExecutableReferences, GetRazorExtension);
         await PopupService.ToastInfoAsync("首次运行加载组件引用成功！");
         first = false;
+        await RunCode();
     }
 
     private static List<RazorExtension> GetRazorExtension
         => typeof(BlazorComponentsExtension).Assembly.GetReferencedAssemblies()
             .Select(asm => new AssemblyExtension(asm.FullName, AppDomain.CurrentDomain.Load(asm.FullName)))
             .Cast<RazorExtension>().ToList();
+
+    public void Dispose()
+    {
+        objRef?.Dispose();
+        HttpClient?.Dispose();
+    }
 }

@@ -12,8 +12,6 @@
 		<EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
 		<MetadataUpdaterSupport>false</MetadataUpdaterSupport>
 		<UseNativeHttpHandler>true</UseNativeHttpHandler>
-		
-		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
 	</PropertyGroup>
 
 	<ItemGroup>
